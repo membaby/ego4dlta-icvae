@@ -11,7 +11,7 @@ from ego4d.tasks.H3M_HAR_Task import H3M_HAR_Task
 from ego4d.utils.parser import load_default_config, parse_args
 from pytorch_lightning import Trainer, seed_everything
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint, ProgressBarBase
-from pytorch_lightning.plugins import DDPPlugin
+from pytorch_lightning.strategies import DDPStrategy
 from data.PATHS import DIR_PATH
 
 logger = logging.get_logger(__name__)
@@ -111,11 +111,10 @@ def main(cfg):
         max_epochs=cfg.SOLVER.MAX_EPOCH,
         num_sanity_val_steps=3,
         benchmark=True,
-        log_gpu_memory="min_max",
         replace_sampler_ddp=False,
         fast_dev_run=cfg.FAST_DEV_RUN,
         default_root_dir=cfg.OUTPUT_DIR,
-        plugins=DDPPlugin(find_unused_parameters=False),  ##default is placed to false
+        strategy=DDPStrategy(find_unused_parameters=False),  ##default is placed to false
         **args,
     )
     if  cfg.TEST.ENABLE:
@@ -129,7 +128,7 @@ def main(cfg):
 
 if __name__ == "__main__":
     args = parse_args()
-    totrain = 'H3M' # Choose between [ICVAE, H3M]
+    totrain = 'ICVAE' # Choose between [ICVAE, H3M]
     finetuning = False # When doing MultiTask_Head place to True
 
 

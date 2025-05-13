@@ -1,7 +1,7 @@
 TRAIN:
   ENABLE: True
   DATASET: Ego4dLongTermAnticipation_Features
-  BATCH_SIZE: 64 #512 # 128
+  BATCH_SIZE: 64 #512 #128
 TEST:
   ENABLE: True
   SPLIT: "val" # {"test", "val", "train"}
@@ -17,9 +17,10 @@ FORECASTING:
   NUM_INPUT_CLIPS: 8
   NUM_ACTIONS_TO_PREDICT: 20
 SOLVER:
+  ACCELERATOR: cuda
   BASE_LR: 1e-4 #4e-2
   LR_POLICY: cosine_warmup
-  MAX_EPOCH: 150
+  MAX_EPOCH: 30
   MOMENTUM: 0.9
   OPTIMIZING_METHOD: adam
   WEIGHT_DECAY: 1e-4
@@ -42,12 +43,11 @@ MODEL:
     - kl
 
 DATA:
-  PATH_PREFIX: [PATH_TO_CODE_BASE}/data/annotations/
-  CONFIG_FILE: [PATH_TO_CODE_BASE}/data/config/config_H3M.yaml
-  FEAT_PREFIX: [PATH_TO_DATASET}
-  FOLDER: [PATH_TO_CODE_BASE}/experiments
-  FEATURE_TYPE: "onehot" # {"language", "onehot", "vision"} always mantain onehot in cvae, as embedding layer is the one that obtains the representation directly
-
+  PATH_PREFIX: /content/ego4dlta-icvae/data/annotations/
+  CONFIG_FILE: /content/ego4dlta-icvae/data/config/config_H3M.yaml
+  FEAT_PREFIX: /content/ego4dlta-icvae/pre/
+  FOLDER: /content/ego4dlta-icvae/experiments
+  FEATURE_TYPE: "onehot" # Options: {"language", "onehot", "vision"}
 
 CVAE:
   separate_nouns_verbs : True #True
